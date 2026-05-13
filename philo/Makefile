@@ -6,7 +6,7 @@
 #    By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/09 08:56:45 by ryatan            #+#    #+#              #
-#    Updated: 2026/05/10 12:21:37 by ryatan           ###   ########.fr        #
+#    Updated: 2026/05/12 23:33:06 by ryatan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,21 @@ NAME = philo
 COMPILER = cc
 INCLUDES = -Iinclude
 CFLAGS = -Wall -Wextra -Werror
+EXT_LIBS = -lpthread
 
 OBJ_DIR = obj
 SRC_DIR = src
 
-SRC = $(SRC_DIR)/main.c \
+SRC = $(SRC_DIR)/errors.c \
+	  $(SRC_DIR)/helpers.c \
+	  $(SRC_DIR)/main.c \
 
 # pattern substitution
 # $(patsubst WHAT_TO_MATCH,WHAT_TO_REPLACE_IT_WITH,WHERE_TO_LOOK)
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
 $(NAME): $(OBJ)
-	$(COMPILER) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(COMPILER) $(CFLAGS) $(EXT_LIBS)  $(OBJ) -o $(NAME)
 
 $(OBJ_DIR): 
 	mkdir -p $(OBJ_DIR)
