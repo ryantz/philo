@@ -35,14 +35,4 @@ int	is_num(char *str)
 	return (1);
 }
 
-void	parse_args(t_pdata *p_data, int argc, char **argv)
-{
-	p_data->number_of_philosphers = argv[1];
-	p_data->time_to_die = argv[2];
-	p_data->time_to_eat = argv[3];
-	p_data->time_to_sleep = argv[4];
-	if (argc == 6)
-		p_data->number_of_times_each_philosopher_must_eat = argv[5];
-	else
-		p_data->number_of_times_each_philosopher_must_eat = 0;
-}
+
