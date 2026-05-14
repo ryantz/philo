@@ -34,5 +34,3 @@ int	is_num(char *str)
 	}
 	return (1);
 }
-
-

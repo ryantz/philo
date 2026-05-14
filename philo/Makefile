@@ -6,7 +6,7 @@
 #    By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/09 08:56:45 by ryatan            #+#    #+#              #
-#    Updated: 2026/05/12 23:33:06 by ryatan           ###   ########.fr        #
+#    Updated: 2026/05/14 17:40:46 by ryatan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRC_DIR = src
 
 SRC = $(SRC_DIR)/errors.c \
 	  $(SRC_DIR)/helpers.c \
+	  $(SRC_DIR)/atoi.c \
+	  $(SRC_DIR)/threads.c \
 	  $(SRC_DIR)/main.c \
 
 # pattern substitution

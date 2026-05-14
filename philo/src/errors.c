@@ -16,7 +16,7 @@ int	arg_type_check(int argc, char **argv)
 	i = 1;
 	while (i < argc)
 	{
-		if(!is_num(argv[i]))
+		if (!is_num(argv[i]))
 			return (print_error(WRONG_INPUT_TYPE), 1);
 		i++;
 	}
@@ -30,4 +30,3 @@ void	print_error(int err)
 	if (err == WRONG_INPUT_TYPE)
 		write_err("Wrong input type. Inputs are not numbers.");
 }
-
