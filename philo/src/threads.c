@@ -27,7 +27,7 @@ void	*create_philo(void *arg)
 	return (NULL);
 }
 
-void	create_threads(t_pdata *p_data)
+void	create_pthreads(t_pdata *p_data)
 {
 	int	i;
 
@@ -44,7 +44,7 @@ void	create_threads(t_pdata *p_data)
 	}
 }
 
-void	init_mutex(t_pdata *p_data)
+void	init_forks(t_pdata *p_data)
 {
 	int	i;
 
@@ -54,4 +54,8 @@ void	init_mutex(t_pdata *p_data)
 		pthread_mutex_init(&(p_data->fork_array[i]), NULL);
 		i++;
 	}
+}
+
+void	init_philos(t_pdata *p_data)
+{
 }

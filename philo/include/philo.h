@@ -30,6 +30,7 @@ typedef struct s_pdata
 typedef struct s_philo
 {
 	int				id;
+	int				times_eaten;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 }	t_philo;
