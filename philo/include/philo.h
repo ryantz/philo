@@ -15,6 +15,14 @@ enum e_error
 	WRONG_INPUT_TYPE,
 };
 
+typedef struct s_philo
+{
+	int				id;
+	int				times_eaten;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*l_fork;
+}	t_philo;
+
 typedef struct s_pdata
 {
 	int				number_of_philosophers;
@@ -26,14 +34,6 @@ typedef struct s_pdata
 	pthread_t		*thread_array;
 	pthread_mutex_t	*fork_array;
 }	t_pdata;
-
-typedef struct s_philo
-{
-	int				id;
-	int				times_eaten;
-	pthread_mutex_t	*r_fork;
-	pthread_mutex_t	*l_fork;
-}	t_philo;
 
 // helpers
 size_t	ft_strlen(char *str);
