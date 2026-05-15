@@ -15,24 +15,31 @@ enum e_error
 	WRONG_INPUT_TYPE,
 };
 
+typedef struct s_pdata t_pdata;
+
 typedef struct s_philo
 {
 	int				id;
+	long			last_meal_time;
 	int				times_eaten;
+	pthread_t		thread;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
+	t_pdata			*p_data;
 }	t_philo;
 
 typedef struct s_pdata
 {
 	int				number_of_philosophers;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			start_time;
+	int				deaths;
 	int				number_of_times_each_philosopher_must_eat;
 	t_philo			*philo_array;
-	pthread_t		*thread_array;
 	pthread_mutex_t	*fork_array;
+	pthread_mutex_t	lock_print;
 }	t_pdata;
 
 // helpers
@@ -54,5 +61,8 @@ void	*print_action(void *arg);
 
 //atoi
 int		ft_atoi(const char *nptr);
+
+//scheduler
+long	get_time_ms(void);
 
 #endif
