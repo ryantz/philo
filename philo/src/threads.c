@@ -1,30 +1,52 @@
 #include "philo.h"
 
-void	parse_args(int argc, char **argv, t_pdata *p_data)
+void	*create_philo(void *arg);
+void	create_pthreads(t_pdata *p_data);
+void	*check_deaths(void *arg);
+
+void	create_checking_thread(t_pdata *p_data)
 {
-	p_data->number_of_philosophers = ft_atoi(argv[1]);
-	p_data->time_to_die = ft_atoi(argv[2]);
-	p_data->time_to_eat = ft_atoi(argv[3]);
-	p_data->time_to_sleep = ft_atoi(argv[4]);
-	p_data->start_time = get_time_ms();
-	p_data->deaths = 0;
-	p_data->fork_array = malloc(
-			ft_atoi(argv[1]) * sizeof(pthread_mutex_t));
-	p_data->philo_array = malloc(
-			p_data->number_of_philosophers * sizeof(t_philo));
-	if (argc == 6)
-		p_data->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
-	else
-		p_data->number_of_times_each_philosopher_must_eat = 0;
+	pthread_create(&(p_data->monitoring_thread), NULL, check_deaths, p_data);
 }
 
-void	*create_philo(void *arg)
+void	*check_deaths(void *arg)
 {
-	t_philo	*philo;
+	int		i;
+	long	last_meal_time;
+	t_pdata	*p_data;
 
-	philo = (t_philo *)arg;
-	printf("Philo thread created with philo id %d\n", philo->id);
+	p_data = (t_pdata *)arg;
+	while (1)
+	{
+		i = 0;
+		while (i < p_data->number_of_philosophers)
+		{
+			pthread_mutex_lock(&(p_data->lock_meal));
+			last_meal_time = p_data->philo_array[i].last_meal_time;
+			pthread_mutex_unlock(&(p_data->lock_meal));
+			if (get_time_ms() - last_meal_time > p_data->time_to_die)
+			{
+				toggle_death_status(p_data);
+				print_log("died", &(p_data->philo_array[i]));
+				return (NULL);
+			}
+			i++;
+		}
+		usleep(1000);
+	}
 	return (NULL);
+}
+
+void	wait_pthread(t_pdata *p_data)
+{
+	int	i;
+
+	i = 0;
+	while (i < p_data->number_of_philosophers)
+	{
+		pthread_join(p_data->philo_array[i].thread, NULL);
+		i++;
+	}
 }
 
 void	create_pthreads(t_pdata *p_data)
@@ -34,42 +56,24 @@ void	create_pthreads(t_pdata *p_data)
 	i = 0;
 	while (i < p_data->number_of_philosophers)
 	{
-		p_data->philo_array[i].id = i;
-		pthread_create(
-			&(p_data->philo_array[i].thread),
-			NULL,
-			create_philo,
+		pthread_create(&(p_data->philo_array[i].thread), NULL, create_philo,
 			&(p_data->philo_array[i]));
 		i++;
 	}
 }
 
-void	init_forks(t_pdata *p_data)
+void	*create_philo(void *arg)
 {
-	int	i;
+	t_philo	*philo;
 
-	i = 0;
-	while (i < p_data->number_of_philosophers)
+	philo = (t_philo *)arg;
+	while (1)
 	{
-		pthread_mutex_init(&(p_data->fork_array[i]), NULL);
-		i++;
+		if (get_death_status(philo->p_data))
+			break ;
+		philo_think(philo);
+		philo_eat(philo);
+		philo_sleep(philo);
 	}
-}
-
-void	init_philos(t_pdata *p_data)
-{
-	int	i;
-
-	i = 0;
-	while (i < p_data->number_of_philosophers)
-	{
-		p_data->philo_array[i].id = i;
-		p_data->philo_array[i].last_meal_time = 0;
-		p_data->philo_array[i].times_eaten = 0;
-		p_data->philo_array[i].r_fork = &(p_data->fork_array[i]);
-		p_data->philo_array[i].l_fork = &(p_data->fork_array[(i + 1)
-				% p_data->number_of_philosophers]);
-		p_data->philo_array[i].p_data = p_data;
-		i++;
-	}
+	return (NULL);
 }

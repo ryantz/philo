@@ -15,7 +15,7 @@ enum e_error
 	WRONG_INPUT_TYPE,
 };
 
-typedef struct s_pdata t_pdata;
+typedef struct s_pdata	t_pdata;
 
 typedef struct s_philo
 {
@@ -37,32 +37,42 @@ typedef struct s_pdata
 	long			start_time;
 	int				deaths;
 	int				number_of_times_each_philosopher_must_eat;
-	t_philo			*philo_array;
+	pthread_t		monitoring_thread;
 	pthread_mutex_t	*fork_array;
+	t_philo			*philo_array;
+	pthread_mutex_t	lock_death;
+	pthread_mutex_t	lock_meal;
 	pthread_mutex_t	lock_print;
 }	t_pdata;
 
-// helpers
+//helpers
 size_t	ft_strlen(char *str);
 void	write_err(char *error_msg);
 int		is_num(char *str);
+void	print_log(char *str, t_philo *philo);
+int		get_death_status(t_pdata *p_data);
 
-// errors
+//errors
 void	print_error(int err);
 int		arg_count_check(int argc);
 int		arg_type_check(int argc, char **argv);
 
-//philo assign
-void	parse_args(int argc, char **argv, t_pdata *p_data);
-void	create_pthreads(t_pdata *p_data);
+//initializer
+void	init_structs(int argc, char **argv, t_pdata *p_data);
 
-//philo state
-void	*print_action(void *arg);
+//threads
+void	create_checking_thread(t_pdata *p_data);
+void	create_pthreads(t_pdata *p_data);
+void	wait_pthread(t_pdata *p_data);
 
 //atoi
 int		ft_atoi(const char *nptr);
 
 //scheduler
 long	get_time_ms(void);
+void	philo_think(t_philo *philo);
+void	philo_eat(t_philo *philo);
+void	philo_sleep(t_philo *philo);
+void	toggle_death_status(t_pdata *p_data);
 
 #endif

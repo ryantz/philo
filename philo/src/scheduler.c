@@ -1,10 +1,5 @@
 #include "philo.h"
 
-/*
-       int gettimeofday(struct timeval *restrict tv,
-                        struct timezone *_Nullable restrict tz);
-*/
-
 long	get_time_ms(void)
 {
 	struct timeval	time;
@@ -13,4 +8,48 @@ long	get_time_ms(void)
 	gettimeofday(&time, NULL);
 	time_in_ms = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (time_in_ms);
+}
+
+void	philo_eat(t_philo *philo)
+{
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->l_fork);
+		print_log("has taken a fork", philo);
+		pthread_mutex_lock(philo->r_fork);
+		print_log("has taken a fork", philo);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->r_fork);
+		print_log("has taken a fork", philo);
+		pthread_mutex_lock(philo->l_fork);
+		print_log("has taken a fork", philo);
+	}
+	pthread_mutex_lock(&(philo->p_data->lock_meal));
+	philo->last_meal_time = get_time_ms();
+	philo->times_eaten++;
+	pthread_mutex_unlock(&(philo->p_data->lock_meal));
+	print_log("is eating", philo);
+	usleep(philo->p_data->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->l_fork);
+	pthread_mutex_unlock(philo->r_fork);
+}
+
+void	philo_sleep(t_philo *philo)
+{
+	print_log("is sleeping", philo);
+	usleep(philo->p_data->time_to_sleep * 1000);
+}
+
+void	philo_think(t_philo *philo)
+{
+	print_log("is thinking", philo);
+}
+
+void	toggle_death_status(t_pdata *p_data)
+{
+	pthread_mutex_lock(&(p_data->lock_death));
+	p_data->deaths = 1;
+	pthread_mutex_unlock(&(p_data->lock_death));
 }

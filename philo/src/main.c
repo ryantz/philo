@@ -16,7 +16,12 @@ int	main(int argc, char **argv)
 		return (1);
 	if (arg_type_check(argc, argv))
 		return (1);
-	parse_args(argc, argv, &p_data);
+	init_structs(argc, argv, &p_data);
 	create_pthreads(&p_data);
+	create_checking_thread(&p_data);
+	wait_pthread(&p_data);
+	pthread_join(p_data.monitoring_thread, NULL);
+	free(p_data.fork_array);
+	free(p_data.philo_array);
 	return (0);
 }
