@@ -6,7 +6,7 @@
 /*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:58:28 by ryatan            #+#    #+#             */
-/*   Updated: 2026/05/16 10:58:29 by ryatan           ###   ########.fr       */
+/*   Updated: 2026/05/16 14:23:11 by ryatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,18 @@ void	*check_stopping_criteria(void *arg)
 	return (NULL);
 }
 
+void	join_philo_pthreads(t_pdata *p_data)
+{
+	int	i;
+
+	i = 0;
+	while (i < p_data->number_of_philosophers)
+	{
+		pthread_join(p_data->philo_array[i].thread, NULL);
+		i++;
+	}
+}
+
 void	create_pthreads(t_pdata *p_data)
 {
 	int	i;
@@ -60,7 +72,6 @@ void	create_pthreads(t_pdata *p_data)
 	{
 		pthread_create(&(p_data->philo_array[i].thread), NULL, create_philo,
 			&(p_data->philo_array[i]));
-		pthread_detach(p_data->philo_array[i].thread);
 		i++;
 	}
 }
@@ -72,7 +83,10 @@ void	*create_philo(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->p_data->number_of_philosophers == 1)
 		return (single_philo_eat(philo), NULL);
-	if (philo->id % 2 == 0)
+	pthread_mutex_lock(&(philo->p_data->lock_meal));
+	philo->last_meal_time = get_time_ms();
+	pthread_mutex_unlock(&(philo->p_data->lock_meal));
+	if (philo->p_data->number_of_philosophers > 2 && philo->id % 2 == 0)
 		usleep(1000);
 	while (!get_stop_status(philo->p_data))
 	{

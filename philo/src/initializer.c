@@ -6,7 +6,7 @@
 /*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:58:11 by ryatan            #+#    #+#             */
-/*   Updated: 2026/05/16 10:58:12 by ryatan           ###   ########.fr       */
+/*   Updated: 2026/05/16 14:26:12 by ryatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	init_philos(t_pdata *p_data)
 	while (i < p_data->number_of_philosophers)
 	{
 		p_data->philo_array[i].id = i;
-		p_data->philo_array[i].last_meal_time = get_time_ms();
 		p_data->philo_array[i].times_eaten = 0;
+		p_data->philo_array[i].last_meal_time = get_time_ms();
 		p_data->philo_array[i].r_fork = &(p_data->fork_array[i]);
 		p_data->philo_array[i].l_fork = &(p_data->fork_array[(i + 1)
 				% p_data->number_of_philosophers]);

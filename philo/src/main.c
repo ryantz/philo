@@ -6,7 +6,7 @@
 /*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:58:14 by ryatan            #+#    #+#             */
-/*   Updated: 2026/05/16 10:58:15 by ryatan           ###   ########.fr       */
+/*   Updated: 2026/05/16 14:19:47 by ryatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	main(int argc, char **argv)
 		return (1);
 	init_structs(argc, argv, &p_data);
 	create_pthreads(&p_data);
+	usleep(1000);
 	create_checking_thread(&p_data);
 	pthread_join(p_data.monitoring_thread, NULL);
+	join_philo_pthreads(&p_data);
 	clean_up(&p_data);
 	return (0);
 }

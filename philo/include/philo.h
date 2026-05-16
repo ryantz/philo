@@ -6,7 +6,7 @@
 /*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:57:51 by ryatan            #+#    #+#             */
-/*   Updated: 2026/05/16 10:57:52 by ryatan           ###   ########.fr       */
+/*   Updated: 2026/05/16 14:41:13 by ryatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_pdata
 }	t_pdata;
 
 //helpers
+void	safe_sleep(long sleep_duration, t_pdata *p_data);
 size_t	ft_strlen(char *str);
 int		is_num(char *str);
 void	clean_up(t_pdata *p_data);
@@ -80,6 +81,7 @@ void	init_structs(int argc, char **argv, t_pdata *p_data);
 //threads
 void	create_checking_thread(t_pdata *p_data);
 void	create_pthreads(t_pdata *p_data);
+void	join_philo_pthreads(t_pdata *p_data);
 
 //atoi
 int		ft_atoi(const char *nptr);

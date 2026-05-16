@@ -6,11 +6,24 @@
 /*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:58:08 by ryatan            #+#    #+#             */
-/*   Updated: 2026/05/16 10:58:08 by ryatan           ###   ########.fr       */
+/*   Updated: 2026/05/16 14:33:48 by ryatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	safe_sleep(long sleep_duration, t_pdata *p_data)
+{
+	long	end_time;
+
+	end_time = get_time_ms() + sleep_duration;
+	while (get_time_ms() < end_time)
+	{
+		if (get_stop_status(p_data))
+			break ;
+		usleep(100);
+	}
+}
 
 size_t	ft_strlen(char *str)
 {

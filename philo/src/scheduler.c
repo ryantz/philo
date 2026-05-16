@@ -6,7 +6,7 @@
 /*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:58:22 by ryatan            #+#    #+#             */
-/*   Updated: 2026/05/16 10:58:23 by ryatan           ###   ########.fr       */
+/*   Updated: 2026/05/16 14:37:56 by ryatan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	single_philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
 	print_log("has taken a fork", philo);
-	usleep(philo->p_data->time_to_die * 1000);
+	safe_sleep(philo->p_data->time_to_die, philo->p_data);
 	pthread_mutex_unlock(philo->l_fork);
 	return ;
 }
@@ -52,7 +52,7 @@ void	philo_eat(t_philo *philo)
 	philo->times_eaten++;
 	pthread_mutex_unlock(&(philo->p_data->lock_meal));
 	print_log("is eating", philo);
-	usleep(philo->p_data->time_to_eat * 1000);
+	safe_sleep(philo->p_data->time_to_eat, philo->p_data);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 }
@@ -60,10 +60,18 @@ void	philo_eat(t_philo *philo)
 void	philo_sleep(t_philo *philo)
 {
 	print_log("is sleeping", philo);
-	usleep(philo->p_data->time_to_sleep * 1000);
+	safe_sleep(philo->p_data->time_to_sleep, philo->p_data);
 }
 
 void	philo_think(t_philo *philo)
 {
+	long	think_ms;
+
 	print_log("is thinking", philo);
+	if (philo->p_data->number_of_philosophers == 2)
+		return ;
+	think_ms = philo->p_data->time_to_die - philo->p_data->time_to_eat
+		- philo->p_data->time_to_sleep;
+	if (think_ms > 0)
+		usleep(think_ms / 2 * 1000);
 }
