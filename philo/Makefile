@@ -6,7 +6,7 @@
 #    By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/09 08:56:45 by ryatan            #+#    #+#              #
-#    Updated: 2026/05/15 15:50:44 by ryatan           ###   ########.fr        #
+#    Updated: 2026/05/16 09:46:52 by ryatan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC = $(SRC_DIR)/errors.c \
 	  $(SRC_DIR)/threads.c \
 	  $(SRC_DIR)/scheduler.c \
 	  $(SRC_DIR)/initializer.c \
+	  $(SRC_DIR)/mutex_helpers.c \
 	  $(SRC_DIR)/main.c \
 
 # pattern substitution

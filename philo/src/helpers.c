@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helpers.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/16 10:58:08 by ryatan            #+#    #+#             */
+/*   Updated: 2026/05/16 10:58:08 by ryatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 size_t	ft_strlen(char *str)
@@ -10,15 +22,6 @@ size_t	ft_strlen(char *str)
 	while (str[len])
 		len++;
 	return (len);
-}
-
-void	write_err(char *error_msg)
-{
-	int	len;
-
-	len = ft_strlen(error_msg);
-	write(2, error_msg, len);
-	write(1, "\n", 1);
 }
 
 int	is_num(char *str)
@@ -35,23 +38,19 @@ int	is_num(char *str)
 	return (1);
 }
 
-void	print_log(char *str, t_philo *philo)
+void	clean_up(t_pdata *p_data)
 {
-	long	current_time;
+	int	i;
 
-	current_time = get_time_ms() - philo->p_data->start_time;
-	pthread_mutex_lock(&(philo->p_data->lock_print));
-	printf("%ld %d ", current_time, philo->id);
-	printf("%s\n", str);
-	pthread_mutex_unlock(&(philo->p_data->lock_print));
-}
-
-int	get_death_status(t_pdata *p_data)
-{
-	int	status;
-
-	pthread_mutex_lock(&(p_data->lock_death));
-	status = p_data->deaths;
-	pthread_mutex_unlock(&(p_data->lock_death));
-	return (status);
+	i = 0;
+	while (i < p_data->number_of_philosophers)
+	{
+		pthread_mutex_destroy(&(p_data->fork_array[i]));
+		i++;
+	}
+	pthread_mutex_destroy(&(p_data->lock_stop_status));
+	pthread_mutex_destroy(&(p_data->lock_meal));
+	pthread_mutex_destroy(&(p_data->lock_print));
+	free(p_data->fork_array);
+	free(p_data->philo_array);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryatan <ryatan@student.42singapore.sg>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/16 10:58:14 by ryatan            #+#    #+#             */
+/*   Updated: 2026/05/16 10:58:15 by ryatan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 /* 
@@ -6,7 +18,7 @@
  *  	time_to_die (ms)
  *  	time_to_eat (ms)
  *  	time_to_sleep (ms)
- *  	number_of_time_each_philosopher_must_eat *
+ *  	number_of_time_each_philosopher_must_eat -> max_eat
  */
 int	main(int argc, char **argv)
 {
@@ -19,9 +31,7 @@ int	main(int argc, char **argv)
 	init_structs(argc, argv, &p_data);
 	create_pthreads(&p_data);
 	create_checking_thread(&p_data);
-	wait_pthread(&p_data);
 	pthread_join(p_data.monitoring_thread, NULL);
-	free(p_data.fork_array);
-	free(p_data.philo_array);
+	clean_up(&p_data);
 	return (0);
 }
